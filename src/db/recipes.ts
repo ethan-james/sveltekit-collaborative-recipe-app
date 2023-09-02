@@ -44,3 +44,6 @@ export const recipesWithIngredientsForList = async (
 		ingredientsToRecipes: undefined,
 		ingredientsToListsToRecipes: undefined
 	}));
+
+export const schedule = (id: number, scheduled: Date | null): Promise<Recipe> =>
+	db.update(recipes).set({ scheduled }).where(eq(recipes.id, id)).returning();

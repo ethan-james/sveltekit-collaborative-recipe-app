@@ -1,9 +1,9 @@
 import type { Actions, Load } from "@sveltejs/kit";
-import { connect, find } from "../../../db/recipes";
+import { connect, find, schedule } from "../../../db/recipes";
 import { findByName, insert, ingredientsInRecipe } from "../../../db/ingredients";
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	insert: async ({ request }) => {
 		const data = await request.formData();
 		const ingredients = data.get("ingredients")?.toString();
 		const recipeId = parseInt(data.get("recipeId")?.toString() || "");
@@ -15,6 +15,13 @@ export const actions: Actions = {
 				await connect(id, recipeId);
 			}
 		}
+	},
+	schedule: async ({ request }) => {
+		const data = await request.formData();
+		const id = parseInt(data.get("id")?.toString() || "0");
+		const scheduled = data.get("scheduled")?.toString();
+		console.log(scheduled);
+		await schedule(id, scheduled ? new Date(scheduled) : null);
 	}
 };
 

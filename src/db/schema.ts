@@ -1,9 +1,10 @@
-import { boolean, integer, serial, text, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { boolean, date, integer, serial, text, pgTable, primaryKey } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const recipes = pgTable("recipes", {
 	id: serial("id").primaryKey(),
 	name: text("name"),
+	scheduled: date("scheduled"),
 	url: text("url")
 });
 
