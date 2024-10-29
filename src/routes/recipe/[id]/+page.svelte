@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { DateInput } from "date-picker-svelte";
 	import { tick } from "svelte";
 	import Fa from "svelte-fa";
@@ -7,12 +9,12 @@
 	import { Status } from "../../../db/ingredients";
 	import AddIngredients from "../../../components/AddIngredients.svelte";
 
-	export let data;
-	let date = data.meal?.scheduled ? new Date(data.meal?.scheduled) : null;
+	let { data } = $props();
+	let date = $state(data.meal?.scheduled ? new Date(data.meal?.scheduled) : null);
 	/**
 	 * @type {HTMLFormElement}
 	 */
-	let form;
+	let form = $state();
 
 	const formatter = new Intl.DateTimeFormat("fr-CA");
 
@@ -27,9 +29,11 @@
 		}
 	};
 
-	$: date &&
-		date.toISOString().slice(0, 10) !== data.meal?.scheduled &&
-		tick().then(() => form?.requestSubmit());
+	run(() => {
+		date &&
+			date.toISOString().slice(0, 10) !== data.meal?.scheduled &&
+			tick().then(() => form?.requestSubmit());
+	});
 </script>
 
 <main>

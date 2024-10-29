@@ -1,10 +1,17 @@
 <script>
 	import "../app.css";
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 </script>
 
 <div class="flex flex-col gap-12 p-16 pt-8">
 	<!-- <h1 class="font-bold text-3xl text-center">Soup Squad</h1> -->
-	<slot />
+	{@render children?.()}
 </div>
 
 <div class="btm-nav">

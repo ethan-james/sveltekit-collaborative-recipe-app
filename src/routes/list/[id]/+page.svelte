@@ -1,7 +1,7 @@
 <script>
 	import AddIngredients from "../../../components/AddIngredients.svelte";
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <h3>{data.list?.name}</h3>
@@ -40,7 +40,7 @@
 			<progress
 				max="1"
 				value={ingredients.filter((i) => i.completed).length / ingredients.length}
-			/>
+			></progress>
 
 			<!-- <ul>
 				{#each ingredients as { completed, id: ingredientId, name }}
