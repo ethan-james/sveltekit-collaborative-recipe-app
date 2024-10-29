@@ -9,13 +9,10 @@
 </ul>
 
 <form method="POST">
-	<label>
-		Name
-		<input name="name" />
-	</label>
-	<label>
-		URL
-		<input name="url" />
-	</label>
-	<button>Create Recipe</button>
+	<fieldset>
+		<legend class="p-4"> New Recipe </legend>
+		<input name="name" placeholder="Name" type="text" />
+		<input name="url" placeholder="URL" type="text" />
+		<button class="btn btn-primary">Create Recipe</button>
+	</fieldset>
 </form>
