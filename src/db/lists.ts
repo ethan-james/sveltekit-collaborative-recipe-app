@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "./adapter";
-import { lists } from "./schema";
+import { ingredients, lists } from "./schema";
 import { ingredientsToListsToRecipes } from "./schema";
 
 export type List = typeof lists.$inferSelect;
@@ -24,7 +24,25 @@ export const complete = async (
 		);
 
 export const connect = async (ingredientId: number, listId: number, recipeId: number) =>
-	db.insert(ingredientsToListsToRecipes).values({ ingredientId, listId, recipeId });
+	db
+		.insert(ingredientsToListsToRecipes)
+		.values({ ingredientId, listId, recipeId })
+		.onConflictDoUpdate({
+			target: [ingredientsToListsToRecipes.ingredientId, ingredientsToListsToRecipes.recipeId],
+			set: { listId }
+		});
+
+export const disconnect = async (ingredientId: number, listId: number, recipeId: number) =>
+	db
+		.update(ingredientsToListsToRecipes)
+		.set({ listId: null })
+		.where(
+			and(
+				eq(ingredientsToListsToRecipes.ingredientId, ingredientId),
+				eq(ingredientsToListsToRecipes.listId, listId),
+				eq(ingredientsToListsToRecipes.recipeId, recipeId)
+			)
+		);
 
 export const find = async (id: string | undefined): Promise<List | null> => {
 	const results = await db
