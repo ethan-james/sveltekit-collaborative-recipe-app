@@ -1,8 +1,23 @@
 import type { Actions, Load } from "@sveltejs/kit";
-import { connect, find, schedule } from "../../../db/recipes";
-import { findByName, insert, ingredientsInRecipe } from "../../../db/ingredients";
+import { connect as connectList, disconnect as disconnectList } from "../../../db/lists";
+import { connect, find, findMeal, schedule } from "../../../db/recipes";
+import {
+	findByName,
+	getStatus,
+	insert,
+	ingredientsInRecipe,
+	lockIngredient,
+	unlockIngredient
+} from "../../../db/ingredients";
 
 export const actions: Actions = {
+	addIngredientToShoppingList: async ({ request }) => {
+		const data = await request.formData();
+		const ingredientId = parseInt(data.get("ingredientId")?.toString() || "");
+		const listId = parseInt(data.get("listId")?.toString() || "");
+		const recipeId = parseInt(data.get("recipeId")?.toString() || "");
+		await connectList(ingredientId, listId, recipeId);
+	},
 	insert: async ({ request }) => {
 		const data = await request.formData();
 		const ingredients = data.get("ingredients")?.toString();
@@ -16,16 +31,43 @@ export const actions: Actions = {
 			}
 		}
 	},
+	lockIngredient: async ({ request }) => {
+		const data = await request.formData();
+		const ingredientId = parseInt(data.get("ingredientId")?.toString() || "");
+		if (ingredientId) await lockIngredient(ingredientId);
+	},
+	removeIngredientFromRecipe: async ({ request }) => {
+		const data = await request.formData();
+		const ingredientId = parseInt(data.get("ingredientId")?.toString() || "");
+		const recipeId = parseInt(data.get("recipeId")?.toString() || "");
+	},
+	removeIngredientFromShoppingList: async ({ request }) => {
+		const data = await request.formData();
+		const ingredientId = parseInt(data.get("ingredientId")?.toString() || "");
+		const listId = parseInt(data.get("listId")?.toString() || "");
+		const recipeId = parseInt(data.get("recipeId")?.toString() || "");
+		await disconnectList(ingredientId, listId, recipeId);
+	},
 	schedule: async ({ request }) => {
 		const data = await request.formData();
 		const id = parseInt(data.get("id")?.toString() || "0");
 		const scheduled = data.get("scheduled")?.toString();
-		console.log(scheduled);
-		await schedule(id, scheduled ? new Date(scheduled) : null);
+		await schedule(id, scheduled || null);
+	},
+	unlockIngredient: async ({ request }) => {
+		const data = await request.formData();
+		const ingredientId = parseInt(data.get("ingredientId")?.toString() || "");
+		if (ingredientId) await unlockIngredient(ingredientId);
 	}
 };
 
 export const load: Load = async ({ params: { id } }) => ({
+	meal: await findMeal(id),
 	recipe: await find(id),
-	ingredients: (await ingredientsInRecipe(id)).map(({ ingredients }) => ingredients)
+	ingredients: (await ingredientsInRecipe(id)).map(
+		({ ingredients, ingredientsToListsToRecipes }) => ({
+			...ingredients,
+			status: getStatus(ingredientsToListsToRecipes)
+		})
+	)
 });
