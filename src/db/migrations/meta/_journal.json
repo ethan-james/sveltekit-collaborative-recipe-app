@@ -1,33 +1,12 @@
 {
-  "version": "5",
-  "dialect": "mysql",
+  "version": "7",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1693494365932,
-      "tag": "0000_cooing_mad_thinker",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1693497724760,
-      "tag": "0001_shocking_veda",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1693498842303,
-      "tag": "0002_demonic_matthew_murdock",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1693684825193,
-      "tag": "0003_fancy_tattoo",
+      "version": "6",
+      "when": 1724407847687,
+      "tag": "0000_mixed_sentinels",
       "breakpoints": true
     }
   ]

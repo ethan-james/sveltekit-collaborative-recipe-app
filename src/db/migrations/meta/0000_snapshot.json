@@ -1,24 +1,33 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "33491586-5c0d-470a-8028-f7336ea42d45",
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "71b97e1d-9e57-4322-a151-cf7efa40f325",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "ingredients": {
       "name": "ingredients",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
+        },
+        "locked": {
+          "name": "locked",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -28,25 +37,43 @@
     },
     "ingredientsToListsToRecipes": {
       "name": "ingredientsToListsToRecipes",
-      "schema": "",
       "columns": {
         "ingredientId": {
           "name": "ingredientId",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "listId": {
           "name": "listId",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
         },
         "recipeId": {
           "name": "recipeId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "deleted": {
+          "name": "deleted",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "completed": {
+          "name": "completed",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -92,52 +119,77 @@
         }
       },
       "compositePrimaryKeys": {
-        "ingredientsToListsToRecipes_ingredientId_listId_recipeId": {
-          "name": "ingredientsToListsToRecipes_ingredientId_listId_recipeId",
+        "ingredientsToListsToRecipes_ingredientId_recipeId_pk": {
           "columns": [
             "ingredientId",
-            "listId",
             "recipeId"
-          ]
+          ],
+          "name": "ingredientsToListsToRecipes_ingredientId_recipeId_pk"
         }
       },
       "uniqueConstraints": {}
     },
-    "ingredientsToRecipes": {
-      "name": "ingredientsToRecipes",
-      "schema": "",
+    "lists": {
+      "name": "lists",
       "columns": {
-        "ingredientId": {
-          "name": "ingredientId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
         },
-        "recipeId": {
-          "name": "recipeId",
-          "type": "integer",
+        "name": {
+          "name": "name",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "ingredientsToRecipes_ingredientId_ingredients_id_fk": {
-          "name": "ingredientsToRecipes_ingredientId_ingredients_id_fk",
-          "tableFrom": "ingredientsToRecipes",
-          "tableTo": "ingredients",
-          "columnsFrom": [
-            "ingredientId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "meals": {
+      "name": "meals",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
         },
-        "ingredientsToRecipes_recipeId_recipes_id_fk": {
-          "name": "ingredientsToRecipes_recipeId_recipes_id_fk",
-          "tableFrom": "ingredientsToRecipes",
+        "scheduled": {
+          "name": "scheduled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "recipeId": {
+          "name": "recipeId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "meals_recipeId_unique": {
+          "name": "meals_recipeId_unique",
+          "columns": [
+            "recipeId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "meals_recipeId_recipes_id_fk": {
+          "name": "meals_recipeId_recipes_id_fk",
+          "tableFrom": "meals",
           "tableTo": "recipes",
           "columnsFrom": [
             "recipeId"
@@ -149,60 +201,32 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "ingredientsToRecipes_ingredientId_recipeId": {
-          "name": "ingredientsToRecipes_ingredientId_recipeId",
-          "columns": [
-            "ingredientId",
-            "recipeId"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "lists": {
-      "name": "lists",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "recipes": {
       "name": "recipes",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "url": {
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -212,10 +236,12 @@
     }
   },
   "enums": {},
-  "schemas": {},
   "_meta": {
     "schemas": {},
     "tables": {},
     "columns": {}
+  },
+  "internal": {
+    "indexes": {}
   }
 }

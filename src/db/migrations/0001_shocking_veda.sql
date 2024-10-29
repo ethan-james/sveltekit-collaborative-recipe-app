@@ -1,1 +1,0 @@
-ALTER TABLE "ingredientsToListsToRecipes" ADD COLUMN "completed" boolean;

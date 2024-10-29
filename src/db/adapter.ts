@@ -1,8 +1,21 @@
-import { neon, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { config } from "dotenv";
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client";
+
 import * as schema from "./schema";
 
-neonConfig.fetchConnectionCache = true;
+declare const process: {
+	env: {
+		TURSO_CONNECTION_URL: string;
+		TURSO_AUTH_TOKEN: string;
+	};
+};
 
-const sql = neon(import.meta.env.VITE_DATABASE_URL);
-export const db = drizzle(sql, { schema });
+config({ path: ".env" });
+
+const client = createClient({
+	url: process.env.TURSO_CONNECTION_URL!,
+	authToken: process.env.TURSO_AUTH_TOKEN!
+});
+
+export const db = drizzle(client, { schema });

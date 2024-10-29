@@ -1,56 +1,45 @@
-import { boolean, date, integer, serial, text, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { integer, text, primaryKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
 
-export const recipes = pgTable("recipes", {
-	id: serial("id").primaryKey(),
-	name: text("name"),
-	scheduled: date("scheduled"),
-	url: text("url")
+export const meals = sqliteTable("meals", {
+	id: text("id").primaryKey(),
+	scheduled: integer("scheduled", { mode: "timestamp" }),
+	recipeId: text("recipeId")
+		.notNull()
+		.references(() => recipes.id)
+		.unique()
 });
 
-export const recipesRelations = relations(recipes, ({ many }) => ({
-	ingredientsToRecipes: many(ingredientsToRecipes),
-	ingredientsToListsToRecipes: many(ingredientsToListsToRecipes)
-}));
-
-export const ingredients = pgTable("ingredients", {
-	id: serial("id").primaryKey(),
-	name: text("name")
-});
-
-export const ingredientsRelations = relations(ingredients, ({ many }) => ({
-	ingredientsToListsToRecipes: many(ingredientsToListsToRecipes),
-	ingredientsToRecipes: many(ingredientsToRecipes)
-}));
-
-export const ingredientsToRecipes = pgTable(
-	"ingredientsToRecipes",
-	{
-		ingredientId: integer("ingredientId")
-			.notNull()
-			.references(() => ingredients.id),
-		recipeId: integer("recipeId")
-			.notNull()
-			.references(() => recipes.id)
-	},
-	(t) => ({
-		pk: primaryKey(t.ingredientId, t.recipeId)
-	})
-);
-
-export const ingredientsToRecipesRelations = relations(ingredientsToRecipes, ({ one }) => ({
-	ingredient: one(ingredients, {
-		fields: [ingredientsToRecipes.ingredientId],
-		references: [ingredients.id]
-	}),
+export const mealsRelations = relations(meals, ({ one }) => ({
 	recipe: one(recipes, {
-		fields: [ingredientsToRecipes.recipeId],
+		fields: [meals.recipeId],
 		references: [recipes.id]
 	})
 }));
 
-export const lists = pgTable("lists", {
-	id: serial("id").primaryKey(),
+export const recipes = sqliteTable("recipes", {
+	id: text("id").primaryKey(),
+	name: text("name"),
+	url: text("url")
+});
+
+export const recipesRelations = relations(recipes, ({ many }) => ({
+	ingredientsToListsToRecipes: many(ingredientsToListsToRecipes),
+	meals: many(meals)
+}));
+
+export const ingredients = sqliteTable("ingredients", {
+	id: text("id").primaryKey(),
+	name: text("name"),
+	locked: integer("locked", { mode: "boolean" }).default(false)
+});
+
+export const ingredientsRelations = relations(ingredients, ({ many }) => ({
+	ingredientsToListsToRecipes: many(ingredientsToListsToRecipes)
+}));
+
+export const lists = sqliteTable("lists", {
+	id: text("id").primaryKey(),
 	name: text("name")
 });
 
@@ -58,22 +47,21 @@ export const listsRelations = relations(ingredients, ({ many }) => ({
 	ingredientsToListsToRecipes: many(ingredientsToListsToRecipes)
 }));
 
-export const ingredientsToListsToRecipes = pgTable(
+export const ingredientsToListsToRecipes = sqliteTable(
 	"ingredientsToListsToRecipes",
 	{
-		ingredientId: integer("ingredientId")
+		ingredientId: text("ingredientId")
 			.notNull()
 			.references(() => ingredients.id),
-		listId: integer("listId")
-			.notNull()
-			.references(() => lists.id),
-		recipeId: integer("recipeId")
+		listId: text("listId").references(() => lists.id),
+		recipeId: text("recipeId")
 			.notNull()
 			.references(() => recipes.id),
-		completed: boolean("completed").default(false)
+		deleted: integer("deleted", { mode: "boolean" }).default(false),
+		completed: integer("completed", { mode: "boolean" }).default(false)
 	},
 	(t) => ({
-		pk: primaryKey(t.ingredientId, t.listId, t.recipeId)
+		pk: primaryKey(t.ingredientId, t.recipeId)
 	})
 );
 

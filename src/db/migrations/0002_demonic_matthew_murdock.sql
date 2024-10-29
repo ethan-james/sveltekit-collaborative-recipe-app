@@ -1,1 +1,0 @@
-ALTER TABLE "ingredientsToListsToRecipes" ALTER COLUMN "completed" SET DEFAULT false;
