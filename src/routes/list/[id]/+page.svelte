@@ -1,4 +1,6 @@
 <script>
+	import AddIngredients from "../../../components/AddIngredients.svelte";
+
 	export let data;
 </script>
 
@@ -25,47 +27,45 @@
 	{/each}
 </ul>
 
-<form method="POST" action="?/insert">
-	<label for="ingredients">Ingredients (comma-separated or one per line)</label>
-	<textarea id="ingredients" name="ingredients" />
-	<input type="hidden" name="listId" value={data.list?.id} />
-	<button>Add Ingredients</button>
-</form>
+{#if data.list}
+	<AddIngredients>
+		<input type="hidden" name="listId" value={data.list.id} />
+	</AddIngredients>
+{/if}
 
 <ul>
 	{#each data.recipes as { id: recipeId, ingredients, name }}
-		<li>
+		<li class="flex flex-col gap-2">
 			<a href="/recipe/{recipeId}">{name}</a>
-			{ingredients.filter((i) => i.completed).length / ingredients.length}
+			<progress
+				max="1"
+				value={ingredients.filter((i) => i.completed).length / ingredients.length}
+			/>
+
+			<!-- <ul>
+				{#each ingredients as { completed, id: ingredientId, name }}
+					<li>
+						{#if data.ingredients.find((i) => i.id === ingredientId)}
+							{completed ? "✓" : "☐"} {name}
+						{:else}
+							<form method="POST" action="?/insert">
+								<input type="hidden" name="ingredients" value={name} />
+								<input type="hidden" name="listId" value={data.list?.id} />
+								<input type="hidden" name="recipeId" value={recipeId} />
+								<button>{name}</button>
+							</form>
+						{/if}
+					</li>
+				{/each}
+			</ul> -->
 		</li>
-		<ul>
-			{#each ingredients as { completed, id: ingredientId, name }}
-				<li>
-					{#if data.ingredients.find((i) => i.id === ingredientId)}
-						{completed ? "✓" : "☐"} {name}
-					{:else}
-						<form method="POST" action="?/insert">
-							<input type="hidden" name="ingredients" value={name} />
-							<input type="hidden" name="listId" value={data.list?.id} />
-							<input type="hidden" name="recipeId" value={recipeId} />
-							<button>{name}</button>
-						</form>
-					{/if}
-				</li>
-			{/each}
-		</ul>
 	{/each}
 </ul>
 
 <style>
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	textarea {
-		height: 10rem;
+	progress {
+		@apply progress;
+		@apply progress-secondary;
 	}
 
 	li {
