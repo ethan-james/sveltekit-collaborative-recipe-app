@@ -1,5 +1,6 @@
 <script>
 	import { Checkbox } from "@/components/ui/checkbox";
+	import { Progress } from "@/components/ui/progress";
 	import AddIngredients from "@/components/AddIngredients.svelte";
 
 	let { data } = $props();
@@ -38,8 +39,8 @@
 	{#each data.recipes as { id: recipeId, ingredients, name }}
 		<li class="flex flex-col gap-2">
 			<a href="/recipe/{recipeId}">{name}</a>
-			<progress max="1" value={ingredients.filter((i) => i.completed).length / ingredients.length}
-			></progress>
+			<Progress max="1" value={ingredients.filter((i) => i.completed).length / ingredients.length}
+			></Progress>
 
 			<!-- <ul>
 				{#each ingredients as { completed, id: ingredientId, name }}
@@ -62,11 +63,6 @@
 </ul>
 
 <style>
-	progress {
-		@apply progress;
-		@apply progress-secondary;
-	}
-
 	li {
 		display: flex;
 		gap: 0.5rem;
