@@ -1,4 +1,5 @@
 <script>
+	import { Input } from "@/components/ui/input";
 	let { data } = $props();
 </script>
 
@@ -11,8 +12,8 @@
 <form method="POST">
 	<fieldset>
 		<legend class="p-4"> New Recipe </legend>
-		<input name="name" placeholder="Name" type="text" />
-		<input name="url" placeholder="URL" type="text" />
+		<Input name="name" placeholder="Name" type="text" />
+		<Input name="url" placeholder="URL" type="text" />
 		<button class="btn btn-primary">Create Recipe</button>
 	</fieldset>
 </form>

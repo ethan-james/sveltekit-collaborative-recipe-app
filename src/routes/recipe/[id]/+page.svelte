@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from "svelte/legacy";
 
 	import { DateInput } from "date-picker-svelte";
 	import { tick } from "svelte";

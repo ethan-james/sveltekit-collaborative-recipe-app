@@ -1,4 +1,5 @@
 <script>
+	import { Input } from "@/components/ui/input";
 	let { data } = $props();
 </script>
 
@@ -11,7 +12,7 @@
 <form method="POST">
 	<label>
 		Name
-		<input name="name" />
+		<Input name="name" />
 	</label>
 	<button>Create List</button>
 </form>

@@ -26,10 +26,6 @@
 	}
 
 	:global(fieldset) {
-		@apply flex flex-col gap-2 form-control;
-	}
-
-	:global(input[type="text"]) {
-		@apply input input-bordered;
+		@apply flex flex-col gap-2;
 	}
 </style>
