@@ -8,7 +8,7 @@
 
 <h3>{data.list?.name}</h3>
 <ul>
-	{#each data.ingredients as { completed, id, name, recipeId }}
+	{#each data.ingredients as ingredient}
 		<li>
 			<form method="POST" action="?/complete">
 				<button
@@ -16,14 +16,14 @@
 						><Checkbox
 							name="completed"
 							type="checkbox"
-							bind:checked={completed}
+							bind:checked={ingredient.completed}
 							value="true"
 						/>{name}</label
 					></button
 				>
-				<input type="hidden" name="ingredientId" value={id} />
+				<input type="hidden" name="ingredientId" value={ingredient.id} />
 				<input type="hidden" name="listId" value={data.list?.id} />
-				<input type="hidden" name="recipeId" value={recipeId} />
+				<input type="hidden" name="recipeId" value={ingredient.recipeId} />
 			</form>
 		</li>
 	{/each}
