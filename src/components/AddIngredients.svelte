@@ -11,19 +11,12 @@
 
 <form method="POST" action="?/insert">
 	<fieldset>
-		<textarea
+		<Textarea
 			id="ingredients"
 			name="ingredients"
 			placeholder="Ingredients (comma-separated or one per line)"
-		></textarea>
+		></Textarea>
 		{@render children?.()}
 		<Button>Add Ingredients</Button>
 	</fieldset>
 </form>
-
-<style>
-	textarea {
-		height: 10rem;
-		@apply textarea textarea-bordered;
-	}
-</style>
