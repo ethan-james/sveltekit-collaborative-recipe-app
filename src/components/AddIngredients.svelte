@@ -1,4 +1,5 @@
 <script>
+	import { Button } from "@/components/ui/button";
 	/**
 	 * @typedef {Object} Props
 	 * @property {import('svelte').Snippet} [children]
@@ -16,15 +17,11 @@
 			placeholder="Ingredients (comma-separated or one per line)"
 		></textarea>
 		{@render children?.()}
-		<button>Add Ingredients</button>
+		<Button>Add Ingredients</Button>
 	</fieldset>
 </form>
 
 <style>
-	button {
-		@apply btn btn-primary;
-	}
-
 	textarea {
 		height: 10rem;
 		@apply textarea textarea-bordered;
