@@ -9,7 +9,6 @@ overrides:
   cookie@<0.7.0: '>=0.7.0'
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
   '@sveltejs/kit@<2.8.3': '>=2.8.3'
-  nanoid@<3.3.8: '>=3.3.8'
 
 importers:
 
@@ -36,6 +35,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.0
         version: 1.1.0(react@18.3.1)
+      '@tailwindcss/postcss':
+        specifier: 4.0.0-beta.9
+        version: 4.0.0-beta.9
       '@tailwindcss/vite':
         specifier: 4.0.0-beta.9
         version: 4.0.0-beta.9(vite@5.4.10(@types/node@22.10.7)(lightningcss@1.29.1))
@@ -135,6 +137,10 @@ importers:
         version: 3.84.1(@cloudflare/workers-types@4.20241022.0)
 
 packages:
+
+  '@alloc/quick-lru@5.2.0':
+    resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
+    engines: {node: '>=10'}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -1519,6 +1525,9 @@ packages:
     resolution: {integrity: sha512-1bpui84CDnrjB6TI3AGR9jYUA28+VIfkrM4BH3+VXA9B80+cARtd3ON06ouA5/r/2xs4qe+T85Z1c0k5X6vLeA==}
     engines: {node: '>= 10'}
 
+  '@tailwindcss/postcss@4.0.0-beta.9':
+    resolution: {integrity: sha512-xXqMnXtg8K2FgrIlqSf3PPHgyAuSiGe7BJ6+6wma96s7VXArsN5UtTwDuksAedJtCymk1liTvLa2eRNrumlavA==}
+
   '@tailwindcss/vite@4.0.0-beta.9':
     resolution: {integrity: sha512-Hf28QkwSLM6bbOkcTQk1iEEOB37v+9vfqdpHUaLSluZpEGCVAFc0i+p2Gvp6MlK840tyixQu5L39VjL2lAZFFQ==}
     peerDependencies:
@@ -2579,9 +2588,9 @@ packages:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
 
-  nanoid@5.0.9:
-    resolution: {integrity: sha512-Aooyr6MXU6HpvvWXKoVoXwKMs/KyVakWwg7xQfv5/S/RIgJMy0Ifa45H9qqYy7pTCszrHzP21Uk4PZq2HpEM8Q==}
-    engines: {node: ^18 || >=20}
+  nanoid@3.3.8:
+    resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
   natural-compare-lite@1.4.0:
@@ -3311,6 +3320,8 @@ packages:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
+
+  '@alloc/quick-lru@5.2.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -4769,6 +4780,15 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.0.0-beta.9
       '@tailwindcss/oxide-win32-x64-msvc': 4.0.0-beta.9
 
+  '@tailwindcss/postcss@4.0.0-beta.9':
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      '@tailwindcss/node': 4.0.0-beta.9
+      '@tailwindcss/oxide': 4.0.0-beta.9
+      lightningcss: 1.29.1
+      postcss: 8.4.47
+      tailwindcss: 4.0.0-beta.9
+
   '@tailwindcss/vite@4.0.0-beta.9(vite@5.4.10(@types/node@22.10.7)(lightningcss@1.29.1))':
     dependencies:
       '@tailwindcss/node': 4.0.0-beta.9
@@ -5928,7 +5948,7 @@ snapshots:
 
   mustache@4.2.0: {}
 
-  nanoid@5.0.9: {}
+  nanoid@3.3.8: {}
 
   natural-compare-lite@1.4.0: {}
 
@@ -6086,7 +6106,7 @@ snapshots:
 
   postcss@8.4.47:
     dependencies:
-      nanoid: 5.0.9
+      nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -6573,7 +6593,7 @@ snapshots:
       esbuild: 0.17.19
       itty-time: 1.0.6
       miniflare: 3.20241022.0
-      nanoid: 5.0.9
+      nanoid: 3.3.8
       path-to-regexp: 6.3.0
       resolve: 1.22.8
       resolve.exports: 2.0.2
