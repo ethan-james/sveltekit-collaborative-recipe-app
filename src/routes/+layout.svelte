@@ -22,7 +22,7 @@
 
 <style lang="postcss">
 	:global(a) {
-		color: theme(colors.blue.700);
+		color: var(--color-blue-700);
 	}
 
 	:global(fieldset) {
