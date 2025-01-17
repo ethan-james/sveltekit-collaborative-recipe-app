@@ -21,6 +21,8 @@
 </div>
 
 <style lang="postcss">
+	@import "tailwindcss/theme" theme(reference);
+	
 	:global(a) {
 		color: var(--color-blue-700);
 	}
